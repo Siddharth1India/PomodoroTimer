@@ -7,3 +7,5 @@ Minimalist theme Pomodoro timer made to focus on better productivity.
 
 This tool work on 25 minute work + 5 minute break model.
 
+# DEMO
+Here is demo of [Pomodoro](https://siddharth1india.github.io/PomodoroTimer/)
