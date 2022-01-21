@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pomodoro - The Productivity Timer</title>
+    <link rel="shortcut icon" type="image/x-icon" href="./timer-time-svgrepo-com.svg" />
+</head>
+<body>
+    <div class='title'>Pomodoro - The Productivity Timer</div>
+    <div>
+        <div>
+            <label>Hours</label>
+        </div>
+        <div class='flex-cnt'>
+            <div class='flex-child-lft' onclick="increase()">
+                <button type="button"  id='plus'>+</button>
+            </div>
+            <div class='flex-child-cnt'>
+                <input type="number" id='hour' min=0 value=0>
+            </div>
+            <div class='flex-child-rght' onclick="decrease()">
+                <button type="button" id='minus'>-</button>
+            </div>
+        </div>
+        <div>
+            <label>Minutes</label>
+        </div>
+        <div class='flex-cnt'>
+            <div class='flex-child-lft' onclick="increaseMin()">
+                <button type="button"  id='plus'>+</button>
+            </div>
+            <div class='flex-child-cnt'>
+                <input type="number" id='min' min=0 value=0>
+            </div>
+            <div class='flex-child-rght' onclick="decreaseMin()">
+                <button type="button" id='minus'>-</button>
+            </div>
+        </div>
+    </div>
+    <div id='mid'>
+        <button type="button" id='set' onclick="setTime()">SET</button>
+    </div>
+    <div class='flex-op'>
+        <div class='flex-child'>
+            <p>Hour</p>
+            <p id='hr'>00</p>
+        </div>
+        <div class='flex-child'>
+            <p>&nbsp</p>
+            <p>:</p>
+        </div>
+        <div class='flex-child'>
+            <p>Minute</p>
+            <p id='mn'>00</p>
+        </div>
+        <div class='flex-child'>
+            <p>&nbsp</p>
+            <p>:</p>
+        </div>
+        <div class='flex-child'>
+            <p>Second</p>
+            <p id='sc'>00</p>
+        </div>
+    </div>
+    <div class='btn'>
+        <button type="button" id='start' onclick="startTimer()">Start</button>
+    </div>
+    <div class='foot'>
+        <p>Made by <a href="https://twitter.com/Siddharth1India" target="_blank">Siddharth</a> with <span style="color: red; font-size: 32px;">&hearts;</span>. Check out on <a href="">GitHub.</a></p>
+    </div>
+    <p>NOTE: Refresh page if you want to start new timer (Or suspend current timer).</p>
+    <style>
+        *{
+            background-color: #ffd54f;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+        .title{
+            font-size: 36px;
+            text-align: center;
+            margin-top: 0%;
+        }
+        .flex-cnt{
+            display: flex;
+            width: 100%;
+        }
+        .flex-child-lft{
+            width: 30%;
+        }
+        .flex-child-cnt{
+            width: 40%;
+        }
+        .flex-child-rght{
+            width: 30%;
+        }
+        label{
+            display: block;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            margin-top: 0;
+            font-size: 14px;
+            line-height: 24px;
+            letter-spacing: 2px;
+            text-align: center;
+        }
+        input[type="number"]{
+            align-self: center;
+            position: relative;
+            width: 100%;
+            margin: 0 auto 0 auto;
+            background-color: #e0e0e0;
+            overflow: hidden;
+            appearance: none;
+            -webkit-appearance: none;
+            -webkit-border-radius: 0px;
+            -moz-appearance: none;
+            border-left: 2px solid rgba(0, 0, 0, 0);
+            border-right: 2px solid rgba(0, 0, 0, 0);
+            border-top: 2px solid rgba(0, 0, 0, 0);
+            border-bottom: 2px solid rgba(0, 0, 0, 0);
+            border-radius: none;
+            height: 24px;
+            font-size: 16px;
+            text-align: center;
+            transition: all 3s ease-out;
+        }
+        input[type="number"]:focus{
+            border: #000 1px solid;
+            border-radius: 1px;
+            background-color: #fff;
+        }
+        :-moz-focusring{
+            color: white;
+            outline: 1px solid black;
+        }
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input[type="number"] {
+            -moz-appearance: textfield;
+        }
+        button{
+            height: 30px;
+            width: 50px;
+            overflow: hidden;
+            border: 1px solid black;
+            background-color: #e0e0e0;
+            cursor: pointer;   
+            transition-duration: 0.2s;  
+            font-size: 25px;
+            text-align: center;
+            font-weight: 900;
+            line-height: 0;
+        }
+        button:hover{
+            transform: scale(1.1);
+        }
+        #plus{
+            display: block;
+            margin-left: auto;
+            margin-right: 5px;
+        }
+        #minus{
+            display: block;
+            margin-left: 15px;
+            margin-right: auto;
+        }
+        #mid{
+            width: 100%;
+            margin-top: 20px;
+            display: flex;
+        }
+        #set{
+            font-weight: 100;
+            height: 40px;
+            width: 20%;
+            margin-left: auto;
+            margin-right: auto;
+            background-color: #008ca8;
+            color: white;
+            align-self: center;
+        }
+        .flex-op{
+            width: 60%;
+            height: auto;
+            display: flex;
+            margin: 0 auto;
+        }
+        .flex-child{
+            flex: 1;   
+            overflow: hidden;
+            text-align: center;
+            font-size: 36px;
+        }
+        .btn{
+            width: 100%;
+            display: flex;
+        }
+        #start{
+            height: 40px;
+            width: 20%;
+            font-weight: lighter;
+            margin-left: auto;
+            margin-right: auto;
+            background-color: #008ca8;
+            color: #fff;
+        }
+        .foot{
+            font-weight: 0;
+            font-size: 20px;
+            text-decoration: none;
+        }
+        @media (max-width: 970px) {
+            .title{
+                margin-top: 8%;
+            }
+            label{
+                margin-top: 10%;
+            }
+            #set{
+                width: 50%;
+                margin-top: 5%;
+            }
+            .flex-op{
+                width: 100%;
+                margin-top: 10%;
+            }
+            .flex-child{
+                font-size: 20px;
+            }
+            .btn{
+                margin-top: 10%;
+                width: 100%;
+            }
+            #start{
+                width: 50%;
+            }
+            .foot{
+                margin-top: 20%;
+            }
+        }
+    </style>
+    <script>
+        function increase(){
+            var valInit = parseInt(document.getElementById('hour').value, 10);
+            var valFinal = valInit+1;
+            valInit = valFinal;
+            document.getElementById('hour').value = valFinal;
+        }
+        function decrease(){
+            var valInit = parseInt(document.getElementById('hour').value, 10);
+            if(valInit>0){
+                var valFinal = valInit-1;
+                valInit = valFinal;
+                document.getElementById('hour').value = valFinal;
+            }
+            else{
+                alert('Invalid Value');
+            }
+        }
+        function increaseMin(){
+            var valInit = parseInt(document.getElementById('min').value, 10);
+            if(valInit<59 && valInit>=0){
+                var valFinal = valInit+1;
+                valInit = valFinal;
+                document.getElementById('min').value = valFinal;
+            }
+            else{
+                alert('Invalid Value');
+            }
+        }
+        function decreaseMin(){
+            var valInit = parseInt(document.getElementById('min').value, 10);
+            if(valInit>0){
+                var valFinal = valInit-1;
+                valInit = valFinal;
+                document.getElementById('min').value = valFinal;
+            }
+            else{
+                alert('Invalid Value');
+            }
+        }
+        var hr, mn, total;
+        var arr = [];
+        function setTime(){
+            hr = document.getElementById('hour').value;
+            mn = document.getElementById('min').value;
+            total = (hr*3600)+(mn*60);
+            hr = String(hr).padStart(2, '0');
+            mn = String(mn).padStart(2, '0')
+            document.getElementById('hr').innerHTML = hr;
+            document.getElementById('mn').innerHTML = mn;
+            var alarmMin = total/60;
+            console.log(alarmMin);
+            while(alarmMin>0){
+                alarmMin-= 25;
+                if(alarmMin>=0){
+                    arr.push(alarmMin);
+                    alarmMin -=5;
+                    if(alarmMin>=0){
+                        arr.push(alarmMin);
+                    }
+                }
+            }
+            if(arr[arr.length - 1]!=0){
+                arr.push(0);
+            }
+            for(let i=0;i<arr.length;i++){
+                arr[i] = arr[i]*60;
+            }
+        }
+        var xD;
+        function startTimer(){
+            setInterval(function(){
+                var h = Math.floor(total / 3600);
+                h = String(h).padStart(2, '0');
+                var m = Math.floor(total % 3600 / 60);
+                m = String(m).padStart(2, '0');
+                var s = Math.floor(total % 3600 % 60);
+                s = String(s).padStart(2, '0');
+                total -= 1;
+                labelname:
+                if(total>-2){
+                    document.getElementById('hr').innerHTML = h;
+                    document.getElementById('mn').innerHTML = m;
+                    document.getElementById('sc').innerHTML = s;
+                    if(arr.includes(total)==true){
+                        var audio = new Audio('./Temple-Bell.mp3');
+                        audio.play();
+                    }
+                }
+                else{
+                    break labelname;    
+                }
+            }, 1000);
+        
+        }
+
+
+    </script>
+</body>
+</html>
